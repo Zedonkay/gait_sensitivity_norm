@@ -7,16 +7,26 @@ from sys import argv
 from wolframclient.evaluation import WolframLanguageSession
 from wolframclient.language import wl, wlexpr
 
-def plot_histogram(data):
-    session = WolframLanguageSession()
-    wd = session.WeightedData[data[[All, ;; 2]], data[[All, -1]]]; 
-    session.Histogram3D[wd, {1}, ColorFunction -> "Rainbow"]
+def plot_3d(data):
+    fig = plt.figure()
+    ax = fig.add_subplot(111, projection='3d')
+    surf = ax.plot_trisurf(data['x'], data['y'], data['z'], cmap=cm.jet, linewidth=0)
+    fig.colorbar(surf)
 
-def main():
+    ax.xaxis.set_major_locator(plt.MaxNLocator(5))
+    ax.yaxis.set_major_locator(plt.MaxNLocator(6))
+    ax.zaxis.set_major_locator(plt.MaxNLocator(5))
+
+    fig.tight_layout()
+    plt.show()
+def reorg():
     # Load the data
+    df = pd.read_csv('vertices.csv')
+    df = df.sort_values(by=['x', 'y', 'z'])
+    df.to_csv('vertices.csv', index=False)
+def main():
     data = pd.read_csv('vertices.csv')
-    positions = data[['pos x', 'pos y', 'pos z']]
-    plot_histogram(positions)
+    plot_3d(data)
 
 if __name__ == '__main__':
     main()
