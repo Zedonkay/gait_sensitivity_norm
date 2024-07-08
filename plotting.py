@@ -19,14 +19,38 @@ def plot_3d(data):
 
     fig.tight_layout()
     plt.show()
+
+def plot_2d(data):
+    fig = plt.figure()
+    ax = fig.add_subplot(111)
+    ax.scatter(data['x'], data['y'])
+    plt.show()
+
 def reorg():
     # Load the data
     df = pd.read_csv('vertices.csv')
     df = df.sort_values(by=['x', 'y', 'z'])
+    xs = np.unique(df['x'].values)
+    ys = np.unique(df['y'].values)
+    data = df.values
+    for x in xs:
+        for y in ys:
+            in_data = False
+            for d in data:
+                if d[0] == x and d[1] == y:
+                    in_data = True
+                    break
+            if not in_data:
+                print(f'Adding {x}, {y}')
+                data = np.append(data, [[x, y, 0]], axis=0)
+    df = pd.DataFrame(data, columns=['x', 'y', 'z'])
+    df = df.sort_values(by=['x', 'y', 'z'])
     df.to_csv('vertices.csv', index=False)
 def main():
+    reorg()
     data = pd.read_csv('vertices.csv')
     plot_3d(data)
+    plot_2d(data)
 
 if __name__ == '__main__':
     main()
