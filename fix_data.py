@@ -31,7 +31,7 @@ def reorg(df):
     data = df.values / 1000
     df = pd.DataFrame(data, columns=['x', 'y', 'z'])
     df = df.sort_values(by=['y', 'x', 'z'])
-    df.to_csv('vertices.csv', index=False)
+    df.to_csv('no_bump/vertices_no_bump.csv', index=False)
 
 def round_data(data):
     """
@@ -72,7 +72,7 @@ def round_data(data):
 
 if __name__ == '__main__':
     # Read the formatted data from 'formatted_data.csv'
-    df = pd.read_csv('formatted_data.csv')
+    df = pd.read_csv('formatted_data_no_bump.csv')
     
     # Call the reorg function to reorganize the data
     reorg(df)

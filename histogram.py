@@ -24,8 +24,10 @@ def main():
     # Print the calculated entropy
     print(entropy)
 
-    #2.0124022292398416 for real terrain
+    
     #2.662514259040231 for sim terrain
+    #With bump terrain, the entropy is 1.9617905504963942
+    #Without bump terrain, the entropy is 1.8801592023022458
 
 if __name__ == "__main__":
     main()

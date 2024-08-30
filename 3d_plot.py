@@ -9,7 +9,7 @@ x, y, z = np.indices((2000,1600,49))*.006
 
 voxelarray=[[]]
 ind = 0
-df = pd.read_csv('formatted_data.csv')
+df = pd.read_csv('formatted_data_bump.csv')
 data = df.values
 for px in np.arange(-6,6.2,0.2):
         for py in np.arange(-4.8,5,0.2):
