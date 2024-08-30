@@ -2,26 +2,50 @@ import pandas as pd
 import numpy as np
 
 def reorg(df):
+    """
+    Sorts the data by 'x', 'y', and 'z' columns.
+    Saves the reorganized data to 'vertices.csv'.
+    
+    Parameters:
+    - df: pandas DataFrame
+        The input DataFrame containing the data to be reorganized.
+    
+    Returns:
+    None
+    """
     # Load the data
-    df = df.sort_values(by=['x', 'y', 'z'])
-    xs = np.unique(df['x'].values)
-    ys = np.unique(df['y'].values)
-    data = df.values
-    for x in xs:
-        for y in ys:
-            in_data = False
-            for d in data:
-                if d[0] == x and d[1] == y:
-                    in_data = True
-                    break
-            if not in_data:
-                print(f'Adding {x}, {y}')
-                data = np.append(data, [[x, y, 0]], axis=0)
+    # df = df.sort_values(by=['x', 'y', 'z'])
+    # xs = np.unique(df['x'].values)
+    # ys = np.unique(df['y'].values)
+    # data = df.values
+    # for x in xs:
+    #     for y in ys:
+    #         in_data = False
+    #         for d in data:
+    #             if d[0] == x and d[1] == y:
+    #                 in_data = True
+    #                 break
+    #         if not in_data:
+    #             print(f'Adding {x}, {y}')
+    #             data = np.append(data, [[x, y, 0]], axis=0)
+    data = df.values / 1000
     df = pd.DataFrame(data, columns=['x', 'y', 'z'])
     df = df.sort_values(by=['y', 'x', 'z'])
     df.to_csv('vertices.csv', index=False)
 
 def round_data(data):
+    """
+    Rounds the data to the nearest 0.2 and calculates the mean 'z' value for each rounded data point.
+    Translates the rounded data points to positive coordinates.
+    Saves the rounded data to 'rounded.csv'.
+    
+    Parameters:
+    - data: numpy array
+        The input array containing the data to be rounded and processed.
+    
+    Returns:
+    None
+    """
     rounded_data = []
     for x in np.arange(-6,6.2,0.2):
         for y in np.arange(-4.8,5,0.2):
@@ -47,8 +71,8 @@ def round_data(data):
     df.to_csv('rounded.csv', index=False)
 
 if __name__ == '__main__':
+    # Read the formatted data from 'formatted_data.csv'
+    df = pd.read_csv('formatted_data.csv')
     
-    df = pd.read_csv('vertices.csv')
+    # Call the reorg function to reorganize the data
     reorg(df)
-    df = pd.read_csv('vertices.csv')
-    round_data(df.values)

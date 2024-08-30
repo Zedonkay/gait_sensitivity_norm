@@ -1,15 +1,31 @@
 import pandas as pd
+import numpy as np
 import scipy.stats as stats
 
-
-
 def main():
-    df = pd.read_csv('vertices.csv')
+    # Read the data from the CSV file
+    df = pd.read_csv('/Users/ishayu/Documents/GitHub/gait_sensitivity_norm/sim_terrain/vertices.csv')
+    
+    # Extract the 'z' column values from the DataFrame
     zs = df['z'].values
+    
+    # Remove any NaN values from the 'zs' array
     zs = zs[~pd.isnull(zs)]
+    
+    # Remove any zero values from the 'zs' array
     zs = zs[zs != 0]
-    print(stats.entropy(zs))
-    #7.068082566362332
+    
+    # Calculate the histogram of the 'zs' array to get the probability distribution
+    hist, bin_edges = np.histogram(zs, bins='auto', density=True)
+    
+    # Calculate the entropy of the probability distribution
+    entropy = stats.entropy(hist)
+    
+    # Print the calculated entropy
+    print(entropy)
+
+    #2.0124022292398416 for real terrain
+    #2.662514259040231 for sim terrain
 
 if __name__ == "__main__":
     main()
